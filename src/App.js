@@ -1,85 +1,53 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
-import React, { useState } from "react";
-import Square from "./Square";
-// import Board from "./Board";
-
-export default function Board() {
-  const [xIsNext, setXIsNext] = useState(true);
+function App() {
   const [squares, setSquares] = useState(Array(9).fill(null));
+  const [xIsNext, setXIsNext] = useState(true);
 
-  //
-  const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = "Winner: " + winner;
-  } else {
-    status = "Next player: " + (xIsNext ? "X" : "O");
-  }
+  const handleClick = (i) => {
+    const squaresCopy = [...squares];
+    if (calculateWinner(squaresCopy) || squaresCopy[i]) return;
 
-  function handleClick(i) {
-    // if square is filled, skip for now
-    if (squares[i] || calculateWinner(squares)) {
-      return;
-    }
-    // create a copy of squares
-    const nextSquares = squares.slice();
-    if (xIsNext) {
-      nextSquares[i] = "X";
-    } else {
-      nextSquares[i] = "O";
-    }
-    setSquares(nextSquares);
+    squaresCopy[i] = xIsNext ? 'X' : 'O';
+    setSquares(squaresCopy);
     setXIsNext(!xIsNext);
-  }
+  };
+
+  const renderSquare = (i) => (
+    <button className="square" onClick={() => handleClick(i)}>
+      {squares[i]}
+    </button>
+  );
+
+  const winner = calculateWinner(squares);
+  const status = winner
+    ? `Winner: ${winner}`
+    : `Next player: ${xIsNext ? 'X' : 'O'}`;
 
   return (
-    <>
+    <div className="App">
       <div className="status">{status}</div>
       <div className="board-row">
-        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
+        {renderSquare(0)}
+        {renderSquare(1)}
+        {renderSquare(2)}
       </div>
       <div className="board-row">
-        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
+        {renderSquare(3)}
+        {renderSquare(4)}
+        {renderSquare(5)}
       </div>
       <div className="board-row">
-        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
+        {renderSquare(6)}
+        {renderSquare(7)}
+        {renderSquare(8)}
       </div>
-    </>
+    </div>
   );
 }
 
+// Helper function to calculate the winner
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -89,8 +57,9 @@ function calculateWinner(squares) {
     [1, 4, 7],
     [2, 5, 8],
     [0, 4, 8],
-    [2, 4, 6]
+    [2, 4, 6],
   ];
+
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
@@ -100,3 +69,4 @@ function calculateWinner(squares) {
   return null;
 }
 
+export default App;
