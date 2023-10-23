@@ -1,6 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 
+// Original App() function:
+//  
 // function App() {
 //   return (
 //     <div className="App">
@@ -21,19 +22,16 @@ import './App.css';
 //     </div>
 //   );
 // }
-
 // export default App;
 
 
 import React, { useState } from "react";
 import Square from "./Square";
-// import Board from "./Board";
 
 export default function Board() {
   const [xIsNext, setXIsNext] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
 
-  //
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
