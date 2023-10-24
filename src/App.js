@@ -58,7 +58,7 @@ export default function Board() {
 
   return (
     <>
-      {/* {["Tic","Tac","Toe"].map( word => <h5>{word}</h5>)} */}
+      {["Tic","Tac","Toe"].map( word => <h5>{word}</h5>)}
       <div className="status">{status}</div>
       <div className="board-row">
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
